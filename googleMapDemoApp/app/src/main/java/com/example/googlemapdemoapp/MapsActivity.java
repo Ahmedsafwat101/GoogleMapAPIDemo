@@ -38,7 +38,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         if(requestCode==1) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+                    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10000,10, locationListener);
                 }
             }
         }
@@ -102,17 +102,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)
             {
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION},1);
-                Log.i("msg", "test1");
             }
             else
             {
                 //already have permission
-                Log.i("msg", "test2");
-                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,0,0,locationListener);
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,10000,10,locationListener);
                 Location lastKnownLocation=  locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
                 if(lastKnownLocation!= null){
-                    Log.i("msg", "test3");
-
                     LatLng place = new LatLng(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude());
                     mMap.addMarker(new MarkerOptions().position(place).title("Your Location").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));;
                     mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(place,1));
